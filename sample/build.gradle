@@ -27,7 +27,7 @@ task deploy(type: S3Sync){
     configFile "synchronizer.properties"
 
     from "site/"
-    into "gradle.ja"
+    into "bucket.name/optional-sub"
 }
 
 
