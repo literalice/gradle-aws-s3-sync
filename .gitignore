@@ -1,0 +1,7 @@
+.idea/
+.cache/
+.gradle/
+libs/
+*.iml
+
+sample/deploy.bat

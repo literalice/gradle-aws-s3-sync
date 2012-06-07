@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "http://repository-monochromeroad.forge.cloudbees.com/snapshot/"
+        }
+    }
+
+    dependencies {
+        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.1-SNAPSHOT"
+    }
+}
+
+import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
+
+ext {
+    aws = [accessKey: awsAccessKey, secretKey: awsSecretKey]
+}
+
+task deploy(type: S3Sync){
+    description = "Deploys the document on the site."
+
+    accessKey aws.accessKey
+    secretKey aws.secretKey
+
+    configFile "synchronizer.properties"
+
+    from "site/"
+    into "gradle.ja"
+}
+
+

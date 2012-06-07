@@ -1,0 +1,42 @@
+apply plugin: "groovy"
+apply plugin: "maven"
+
+configurations {
+    deployerJars
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "http://www.jets3t.org/maven2"
+    }
+}
+
+dependencies {
+    compile gradleApi()
+    groovy localGroovy()
+    compile "net.java.dev.jets3t:synchronize:0.9.0"
+    testCompile "org.spockframework:spock-core:0.6-groovy-1.8"
+    deployerJars 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
+}
+
+version = "0.1-SNAPSHOT"
+group = "com.monochromeroad.gradle"
+
+ext {
+    cloudbeesAccount = project.hasProperty("repositoryAccount") ? repositoryAccount : ""
+    cloudbeesUsername = project.hasProperty("repositoryUsername") ? repositoryUsername : ""
+    cloudbeesPassword = project.hasProperty("repositoryPassword") ? repositoryPassword : ""
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def configureAuth = {
+            authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+        }
+        configuration = configurations.deployerJars
+        snapshotRepository(url: "dav:https://repository-${cloudbeesAccount}.forge.cloudbees.com/snapshot/", configureAuth)
+        repository(url: "dav:https://repository-${cloudbeesAccount}.forge.cloudbees.com/release/", configureAuth)
+    }
+}
