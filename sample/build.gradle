@@ -3,12 +3,12 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven {
-            url "http://repository-monochromeroad.forge.cloudbees.com/snapshot/"
+            url "http://repository-monochromeroad.forge.cloudbees.com/release/"
         }
     }
 
     dependencies {
-        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.1-SNAPSHOT"
+        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.1"
     }
 }
 
