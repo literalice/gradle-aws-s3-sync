@@ -44,7 +44,7 @@ class S3Sync extends DefaultTask {
     private String destination
 
     void from(sourcePath) {
-        def sourceDir = project.file(sourcePath, PathValidation.DIRECTORY)
+        def sourceDir = project.file(sourcePath)
         sources = sourceDir.listFiles()
     }
 
