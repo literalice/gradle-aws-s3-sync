@@ -93,6 +93,8 @@ class S3Sync extends DefaultTask {
             synchronizeProperties.withInputStream {
                 myProperties.loadAndReplaceProperties(it, configFile + " in the user config")
             }
+        } else {
+            throw new IllegalStateException("the config file cannot be read : " + synchronizeProperties.absolutePath)
         }
         return myProperties
     }

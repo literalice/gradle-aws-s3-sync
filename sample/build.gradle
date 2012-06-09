@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.2"
+        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.3"
     }
 }
 
@@ -27,7 +27,7 @@ task deploy(type: S3Sync){
     configFile "synchronizer.properties"
 
     from "site/"
-    into "bucket.name/optional-sub"
+    into "gradle-ja"
 }
 
 
