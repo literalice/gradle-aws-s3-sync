@@ -39,13 +39,12 @@ class S3Sync extends DefaultTask {
 
     ReportLevel reportLevel = ReportLevel.All
 
-    private File[] sources
+    private File sourceDir
 
     private String destination
 
     void from(sourcePath) {
-        def sourceDir = project.file(sourcePath)
-        sources = sourceDir.listFiles()
+        sourceDir = project.file(sourcePath)
     }
 
     void into(destinationPath) {
@@ -76,10 +75,15 @@ class S3Sync extends DefaultTask {
                 isMoveEnabled, isBatchMode, isGzipEnabled, isEncryptionEnabled,
                 reportLevel.level, properties);
 
-        client.run(destination, sources,
-                "UP",
-                properties.getStringProperty("password", null), aclString,
-                "S3");
+        def sources = sourceDir.listFiles()
+        if (sources) {
+            client.run(destination, sources,
+                    "UP",
+                    properties.getStringProperty("password", null), aclString,
+                    "S3");
+        } else {
+            logger.warn("The targets files for sync were not found")
+        }
 
     }
 

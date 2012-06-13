@@ -11,7 +11,7 @@ This task assumes the case, for example, a web site would be published in a AWS 
 Published in the maven repository.
 
     http://repository-monochromeroad.forge.cloudbees.com/release/
-    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.3"
+    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
 
 ## Usage
 
@@ -26,7 +26,7 @@ Published in the maven repository.
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.3"
+            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
         }
     }
 
