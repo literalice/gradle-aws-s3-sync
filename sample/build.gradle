@@ -25,6 +25,7 @@ task deploy(type: S3Sync){
     secretKey aws.secretKey
 
     configFile "synchronizer.properties"
+    acl com.monochromeroad.gradle.plugin.aws.s3.ACL.PublicRead
 
     from "site/"
     into "gradle-ja"
