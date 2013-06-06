@@ -82,7 +82,7 @@ class S3Sync extends DefaultTask {
                     properties.getStringProperty("password", null), aclString,
                     "S3");
         } else {
-            logger.warn("The targets files for sync were not found")
+            logger.warn("No files found in given source directory '${sourceDir}'.")
         }
 
     }
