@@ -1,5 +1,7 @@
 package com.monochromeroad.gradle.plugin.aws.s3
 
+import java.io.File
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.PathValidation
@@ -8,6 +10,7 @@ import org.jets3t.service.impl.rest.httpclient.RestS3Service
 import org.jets3t.service.security.AWSCredentials
 import org.jets3t.service.Jets3tProperties
 import org.jets3t.service.Constants
+
 
 class S3Sync extends DefaultTask {
 
@@ -36,14 +39,19 @@ class S3Sync extends DefaultTask {
     def configFile
 
     ACL acl = ACL.Private
+    
+    String action = 'UP'
 
     ReportLevel reportLevel = ReportLevel.All
+
+    private String originalSourcePath
 
     private File sourceDir
 
     private String destination
-
+    
     void from(sourcePath) {
+        originalSourcePath = sourcePath
         sourceDir = project.file(sourcePath)
     }
 
@@ -75,14 +83,27 @@ class S3Sync extends DefaultTask {
                 isMoveEnabled, isBatchMode, isGzipEnabled, isEncryptionEnabled,
                 reportLevel.level, properties);
 
-        def sources = sourceDir.listFiles()
-        if (sources) {
-            client.run(destination, sources,
-                    "UP",
-                    properties.getStringProperty("password", null), aclString,
-                    "S3");
-        } else {
-            logger.warn("No files found in given source directory '${sourceDir}'.")
+        if (action == 'UP'){
+            def sources = sourceDir.listFiles()
+            if (sources) {
+                client.run(destination, sources,
+                        action,
+                        properties.getStringProperty("password", null), aclString,
+                        "S3");
+            } else {
+                logger.warn("No files found in given source directory '${sourceDir}'.")
+            }
+        }
+        else if (action == 'DOWN'){
+            project.file(destination).mkdirs()
+            dest = [new File(destination)]
+            client.run(originalSourcePath, dest,
+                        action,
+                        properties.getStringProperty("password", null), aclString,
+                        "S3");
+        }
+        else{
+            logger.error("unkown action '${action}'")
         }
 
     }

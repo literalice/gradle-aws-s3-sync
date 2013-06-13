@@ -1,8 +1,8 @@
-This is the gradle task for synchronizing a local directory with a AWS S3 bucket.
+This is the gradle task for synchronizing a local directory with a AWS S3 bucket and vice-versa.
 
 This task depends on [JetS3t](http://jets3t.s3.amazonaws.com/index.html), a open-source Java toolkit for AWS.
 
-## Situation
+## Situation - upload
 
 This task assumes the case, for example, a web site would be published in a AWS S3 bucket.
 
@@ -13,7 +13,7 @@ Published in the maven repository.
     http://repository-monochromeroad.forge.cloudbees.com/release/
     Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
 
-## Usage
+## Usage - upload
 
     // Gradle Script
     buildscript {
@@ -43,6 +43,53 @@ Published in the maven repository.
         from "local-site"
         into "my.bucket.name/subdirectory-optional"
     }
+
+## Situation - download
+
+This task assumes the case, for example, a set of files has to be fetched from an S3 bucket to a local directory.
+
+## Downloading
+
+Published in the maven repository.
+
+    http://repository-monochromeroad.forge.cloudbees.com/release/
+    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+
+
+### Usage - download
+
+    // Gradle Script
+    buildscript {
+        repositories {
+            mavenLocal()
+            mavenCentral()
+            maven {
+                url "http://repository-monochromeroad.forge.cloudbees.com/release/"
+            }
+        }
+
+        dependencies {
+            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+        }
+    }
+
+    import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
+
+    task deploy(type: S3Sync){
+        description = "Downloads files from s3 bucket to a local directory"
+
+        accessKey awsAccessKey
+        secretKey awsSecretKey
+
+        configFile "synchronizer.properties"
+        
+        // follows the jets3t conventions for action names
+        action = 'DOWN'
+
+        from "my.bucket.name/subdirectory-optional"
+        from "local-site"
+    }
+
 
 # Options
 
@@ -132,5 +179,11 @@ Published in the maven repository.
         <td><a href="http://jets3t.s3.amazonaws.com/applications/synchronize.html">JetS3t option</a> --reportlevel, from enum "ReportLevel"</td>
         <td>com.monochromeroad.gradle.plugin.aws.s3.<b>ReportLevel.All</b></td>
     </tr>
+    <tr>
+        <td>action()</td>
+        <td>Either 'UP' for uploading into S3 or 'DOWN' for downloading from S3.</td>
+        <td>UP</td>
+    </tr>
+
 </table>
 
