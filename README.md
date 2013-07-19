@@ -11,7 +11,7 @@ This task assumes the case, for example, a web site would be published in a AWS 
 Published in the maven repository.
 
     http://repository-monochromeroad.forge.cloudbees.com/release/
-    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
 
 ## Usage - upload
 
@@ -26,7 +26,7 @@ Published in the maven repository.
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
         }
     }
 
@@ -53,7 +53,7 @@ This task assumes the case, for example, a set of files has to be fetched from a
 Published in the maven repository.
 
     http://repository-monochromeroad.forge.cloudbees.com/release/
-    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
 
 
 ### Usage - download
@@ -69,7 +69,7 @@ Published in the maven repository.
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.4"
+            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
         }
     }
 
