@@ -2,6 +2,8 @@
 .cache/
 .gradle/
 libs/
+build/
 *.iml
 
-sample/deploy.bat
+sample/*.bat
+
