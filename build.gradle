@@ -1,43 +1,81 @@
-apply plugin: "groovy"
-apply plugin: "maven"
-
-configurations {
-    deployerJars
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
 }
 
+version = "0.5"
+group = "com.monochromeroad.gradle-plugins"
+
+apply plugin: "groovy"
+apply plugin: 'maven-publish'
+apply plugin: "bintray"
+
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url "http://www.jets3t.org/maven2"
-    }
+    jcenter()
 }
 
 dependencies {
     compile gradleApi()
     compile localGroovy()
     compile "net.java.dev.jets3t:synchronize:0.9.0"
-    compile "commons-logging:commons-logging:1.1.3"
     testCompile "org.spockframework:spock-core:0.6-groovy-1.8"
-    deployerJars 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
 }
 
-version = "0.5"
-group = "com.monochromeroad.gradle"
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
-ext {
-    cloudbeesAccount = project.hasProperty("repositoryAccount") ? repositoryAccount : ""
-    cloudbeesUsername = project.hasProperty("repositoryUsername") ? repositoryUsername : ""
-    cloudbeesPassword = project.hasProperty("repositoryPassword") ? repositoryPassword : ""
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = "sources"
 }
+jar.dependsOn sourcesJar
 
-uploadArchives {
-    repositories.mavenDeployer {
-        def configureAuth = {
-            authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+final pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
         }
-        configuration = configurations.deployerJars
-        snapshotRepository(url: "dav:https://repository-${cloudbeesAccount}.forge.cloudbees.com/snapshot/", configureAuth)
-        repository(url: "dav:https://repository-${cloudbeesAccount}.forge.cloudbees.com/release/", configureAuth)
+    }
+    developers {
+        developer {
+            id "literalice"
+            name "Masatoshi Hayashi"
+            email "literalice@monochromeroad.com"
+        }
     }
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode("description", "The gradle task for synchronizing a local directory with a AWS S3 bucket.")
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ["mavenJava"]
+    pkg {
+        repo = "maven"
+        name = "gradle-aws-s3-sync"
+        desc = "The gradle task for synchronizing a local directory with a AWS S3 bucket."
+        licenses = ["Apache-2.0"]
+        labels = ["gradle", "aws", "s3"]
+    }
+}
+
