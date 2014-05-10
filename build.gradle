@@ -7,7 +7,7 @@ buildscript {
     }
 }
 
-version = "0.5"
+version = "0.6"
 group = "com.monochromeroad.gradle-plugins"
 
 apply plugin: "groovy"
@@ -28,19 +28,44 @@ dependencies {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+groovydoc {
+    link("https://jets3t.s3.amazonaws.com/api/", "org.jets3t.")
+    link("http://www.gradle.org/docs/current/javadoc/", "org.gradle.")
+    link("http://docs.oracle.com/javase/1.7.0/docs/api/", "java.")
+    groovyClasspath = configurations.compile
+}
+
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = "sources"
 }
-jar.dependsOn sourcesJar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from('docs') {
+        rename('no-java-source', "README")
+    }
+}
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'groovydoc'
+    from 'build/docs/groovydoc'
+}
+jar.dependsOn sourcesJar, javadocJar, groovydocJar
 
 final pomConfig = {
+    packaging "jar"
+    name "Gradle Amazon S3 Sync Plugin"
+    description "The gradle task for synchronizing a local directory with a AWS S3 bucket."
+    url "https://github.com/literalice/gradle-aws-s3-sync"
     licenses {
         license {
             name "The Apache Software License, Version 2.0"
             url "http://www.apache.org/licenses/LICENSE-2.0.txt"
             distribution "repo"
         }
+    }
+    scm {
+        url "https://github.com/literalice/gradle-aws-s3-sync"
+        connection "https://github.com/literalice/gradle-aws-s3-sync"
     }
     developers {
         developer {
@@ -56,10 +81,11 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             artifact sourcesJar
+            artifact javadocJar
+            artifact groovydocJar
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode("description", "The gradle task for synchronizing a local directory with a AWS S3 bucket.")
                 root.children().last() + pomConfig
             }
         }
