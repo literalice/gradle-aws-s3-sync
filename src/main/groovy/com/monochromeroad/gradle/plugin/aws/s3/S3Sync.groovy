@@ -1,7 +1,5 @@
 package com.monochromeroad.gradle.plugin.aws.s3
 
-import java.io.File
-
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.PathValidation
@@ -11,7 +9,11 @@ import org.jets3t.service.security.AWSCredentials
 import org.jets3t.service.Jets3tProperties
 import org.jets3t.service.Constants
 
-
+/**
+ * Main task class for the plugin
+ *
+ * @author Masatoshi Hayashi
+ */
 class S3Sync extends DefaultTask {
 
     def accessKey

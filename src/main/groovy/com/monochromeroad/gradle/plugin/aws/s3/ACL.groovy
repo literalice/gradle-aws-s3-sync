@@ -1,11 +1,9 @@
 package com.monochromeroad.gradle.plugin.aws.s3
 
 /**
- * Created with IntelliJ IDEA.
- * User: masatoshi
- * Date: 12/06/07
- * Time: 7:05
- * To change this template use File | Settings | File Templates.
+ * Access Control List (ACL) for Amazon S3
+ *
+ * @author Masatoshi Hayashi
  */
 public enum ACL {
 
