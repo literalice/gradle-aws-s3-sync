@@ -115,7 +115,7 @@ task bintraySign << {
 
     http.request(POST, JSON) {
         uri.path = "/gpg/${bintrayUser}/${bintray.pkg.repo}/${bintray.pkg.name}/versions/${project.version}"
-        body = [passphrase: ""]
+        body = [passphrase: bintraySignPassphrase]
         response.success = { resp ->
             logger.info("Signed version ${project.version}.")
         }
