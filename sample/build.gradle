@@ -1,14 +1,9 @@
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
-        maven {
-            url "http://repository-monochromeroad.forge.cloudbees.com/release/"
-        }
+        jcenter()
     }
-
     dependencies {
-        classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
     }
 }
 
@@ -30,5 +25,4 @@ task deploy(type: S3Sync){
     from "site/"
     into "gradle-ja"
 }
-
 

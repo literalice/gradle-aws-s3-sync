@@ -6,27 +6,16 @@ This task depends on [JetS3t](http://jets3t.s3.amazonaws.com/index.html), a open
 
 This task assumes the case, for example, a web site would be published in a AWS S3 bucket.
 
-## Downloading
-
-Published in the maven repository.
-
-    http://repository-monochromeroad.forge.cloudbees.com/release/
-    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
-
 ## Usage - upload
 
     // Gradle Script
     buildscript {
         repositories {
-            mavenLocal()
-            mavenCentral()
-            maven {
-                url "http://repository-monochromeroad.forge.cloudbees.com/release/"
-            }
+            jcenter()
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
+            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
         }
     }
 
@@ -48,28 +37,16 @@ Published in the maven repository.
 
 This task assumes the case, for example, a set of files has to be fetched from an S3 bucket to a local directory.
 
-## Downloading
-
-Published in the maven repository.
-
-    http://repository-monochromeroad.forge.cloudbees.com/release/
-    Dependency: "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
-
-
 ### Usage - download
 
     // Gradle Script
     buildscript {
         repositories {
-            mavenLocal()
-            mavenCentral()
-            maven {
-                url "http://repository-monochromeroad.forge.cloudbees.com/release/"
-            }
+            jcenter()
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle:gradle-aws-s3-sync:0.5"
+            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
         }
     }
 
