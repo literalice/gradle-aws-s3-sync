@@ -7,7 +7,11 @@ buildscript {
     }
 }
 
-version = "0.6"
+import groovyx.net.http.HTTPBuilder
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+version = "0.7"
 group = "com.monochromeroad.gradle-plugins"
 
 apply plugin: "groovy"
@@ -54,7 +58,6 @@ jar.dependsOn sourcesJar, javadocJar, groovydocJar
 final pomConfig = {
     packaging "jar"
     name "Gradle Amazon S3 Sync Plugin"
-    description "The gradle task for synchronizing a local directory with a AWS S3 bucket."
     url "https://github.com/literalice/gradle-aws-s3-sync"
     licenses {
         license {
@@ -85,7 +88,8 @@ publishing {
             artifact groovydocJar
 
             pom.withXml {
-                def root = asNode()
+                final root = asNode()
+                root.appendNode('description', 'The gradle task for synchronizing a local directory with a AWS S3 bucket.')
                 root.children().last() + pomConfig
             }
         }
@@ -102,6 +106,22 @@ bintray {
         desc = "The gradle task for synchronizing a local directory with a AWS S3 bucket."
         licenses = ["Apache-2.0"]
         labels = ["gradle", "aws", "s3"]
+    }
+}
+
+task bintraySign << {
+    final http = new HTTPBuilder(bintray.apiUrl)
+    http.headers.Authorization = "Basic ${"$bintrayUser:$bintrayKey".toString().bytes.encodeBase64()}"
+
+    http.request(POST, JSON) {
+        uri.path = "/gpg/${bintrayUser}/${bintray.pkg.repo}/${bintray.pkg.name}/versions/${project.version}"
+        body = [passphrase: ""]
+        response.success = { resp ->
+            logger.info("Signed version ${project.version}.")
+        }
+        response.failure = { resp ->
+            logger.error("Could not sign version ${project.version}: $resp.statusLine")
+        }
     }
 }
 
