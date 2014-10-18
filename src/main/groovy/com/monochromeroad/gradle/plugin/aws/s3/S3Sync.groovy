@@ -98,7 +98,7 @@ class S3Sync extends DefaultTask {
         }
         else if (action == 'DOWN'){
             project.file(destination).mkdirs()
-            dest = [new File(destination)]
+            def dest = [new File(destination)]
             client.run(originalSourcePath, dest,
                         action,
                         properties.getStringProperty("password", null), aclString,
