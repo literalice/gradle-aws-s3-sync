@@ -1,9 +1,10 @@
 buildscript {
     repositories {
+        mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.8"
     }
 }
 

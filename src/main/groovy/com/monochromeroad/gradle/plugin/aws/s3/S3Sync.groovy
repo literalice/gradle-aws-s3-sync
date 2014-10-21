@@ -118,7 +118,8 @@ class S3Sync extends DefaultTask {
         File synchronizeProperties = project.file(configFile, PathValidation.FILE)
         if (synchronizeProperties.canRead()) {
             synchronizeProperties.withInputStream {
-                myProperties.loadAndReplaceProperties(it, configFile + " in the user config")
+                String propertiesSource = configFile + " in the user config";
+                myProperties.loadAndReplaceProperties(it, propertiesSource);
             }
         } else {
             throw new IllegalStateException("the config file cannot be read : " + synchronizeProperties.absolutePath)
