@@ -107,6 +107,9 @@ bintray {
         desc = "The gradle task for synchronizing a local directory with a AWS S3 bucket."
         licenses = ["Apache-2.0"]
         labels = ["gradle", "aws", "s3"]
+        version {
+            attributes = [ 'gradle-plugin': "com.monochromeroad.s3sync:${project.group}:${project.name}" ]
+        }
     }
 }
 
