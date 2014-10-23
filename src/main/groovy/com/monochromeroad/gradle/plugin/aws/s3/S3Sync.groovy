@@ -86,6 +86,10 @@ class S3Sync extends DefaultTask {
                 reportLevel.level, properties);
 
         if (action == 'UP'){
+            final useMD5 = properties.getBoolProperty("filecomparer.use-md5-files", false);
+            if (useMD5) {
+                new File(properties.getStringProperty("filecomparer.md5-files-root-dir", "")).mkdirs();
+            }
             def sources = sourceDir.listFiles()
             if (sources) {
                 client.run(destination, sources,
