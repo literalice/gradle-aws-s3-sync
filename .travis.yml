@@ -1,1 +1,13 @@
+env:
+  global:
+    - BINTRAY_USER=literalice
+    - secure: "EK552JF3vmKvrESflkPNHnMq4J3yHlWM3/7uK3UeQ/mfSj95haW5Mso0qeDdnqB9Ei5sLcmRnyX7O7Zc4LVmGSGsix4Cv845AgFYezhGByK7UhuO3D1j/wDnXMAdRclgA1Gk37REw0/Suf1FzcEz0JJHxik72CSiSliYfMtKaQ0="
+    - secure: "c5vIE3G2giAX0Yw/7bK4kV0MFpeaoVFEisFSNx/lcNK4ebMNjbIAyd++q3RM5ZNOy8XG7W+hGScSXTc/ayN2w5+x/GXmXfL+W2zFua1lhAIXUoGrBwXhEnAUZMQ8zDp2tk2eI1JE6efWV2cL2cvguNJ1pL67cP0KHFGWp2liBI0="
+
 language: java
+jdk:
+  - oraclejdk8
+
+after_success:
+  - if [ "${TRAVIS_BRANCH}" = "release" -a "${TRAVIS_PULL_REQUEST}" = "false" ]; then ./gradlew -PbintrayUser=${BINTRAY_USER} -PbintrayKey=${BINTRAY_KEY} -PbintraySignPassphrase=${LITERALICE_GPG_PASSPHRASE} clean bintrayUpload bintraySign ;fi
+

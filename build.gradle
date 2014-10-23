@@ -93,8 +93,8 @@ publishing {
 }
 
 ext {
-    bintrayUser = project.has("bintrayUser") ?: ""
-    bintrayKey = project.has("bintrayKey") ?: ""
+    bintrayUser = project.has("bintrayUser") ? bintrayUser : ""
+    bintrayKey = project.has("bintrayKey") ? bintrayKey : ""
 }
 
 bintray {
