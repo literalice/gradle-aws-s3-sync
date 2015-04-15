@@ -15,7 +15,7 @@ This task assumes the case, for example, a web site would be published in a AWS 
         }
 
         dependencies {
-            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
+            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.8"
         }
     }
 
