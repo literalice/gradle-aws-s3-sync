@@ -8,7 +8,7 @@ import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
-version = "0.8"
+version = "0.8.1"
 group = "com.monochromeroad.gradle-plugins"
 
 repositories {
@@ -21,7 +21,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile "net.java.dev.jets3t:jets3t:0.9.2"
+    compile "net.java.dev.jets3t:jets3t:0.9.3"
     testCompile "org.spockframework:spock-core:1.0-groovy-2.3-SNAPSHOT"
 }
 
