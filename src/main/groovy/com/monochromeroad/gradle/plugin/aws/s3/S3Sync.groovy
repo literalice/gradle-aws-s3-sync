@@ -7,7 +7,6 @@ import org.jets3t.apps.synchronize.Synchronize
 import org.jets3t.service.impl.rest.httpclient.RestS3Service
 import org.jets3t.service.security.AWSCredentials
 import org.jets3t.service.Jets3tProperties
-import org.jets3t.service.Constants
 
 /**
  * Main task class for the plugin
@@ -15,6 +14,8 @@ import org.jets3t.service.Constants
  * @author Masatoshi Hayashi
  */
 class S3Sync extends DefaultTask {
+
+    private static final DEFAULT_JETS3T_PROPERTIES_NAME = "default.jets3t.properties"
 
     def accessKey
 
@@ -38,13 +39,15 @@ class S3Sync extends DefaultTask {
 
     def batchMode
 
-    def configFile
+    Jets3tProperties jets3tProperties = createNewJets3tProperties(DEFAULT_JETS3T_PROPERTIES_NAME)
 
     ACL acl = ACL.Private
     
     String action = 'UP'
 
     ReportLevel reportLevel = ReportLevel.All
+
+    private _configFile
 
     private String originalSourcePath
 
@@ -66,8 +69,6 @@ class S3Sync extends DefaultTask {
         def awsCredentials = new AWSCredentials(accessKey, secretKey)
         def s3Service = new RestS3Service(awsCredentials)
 
-        Jets3tProperties properties = loadProperties()
-
         boolean doAction = true;
         boolean isQuiet = quiet == true;
         boolean isNoProgress = noProgress == true;
@@ -83,18 +84,18 @@ class S3Sync extends DefaultTask {
         Synchronize client = new Synchronize(
                 s3Service, doAction, isQuiet, isNoProgress, isForce, isKeepFiles, isNoDelete,
                 isMoveEnabled, isBatchMode, isGzipEnabled, isEncryptionEnabled,
-                reportLevel.level, properties);
+                reportLevel.level, jets3tProperties);
 
         if (action == 'UP'){
-            final useMD5 = properties.getBoolProperty("filecomparer.use-md5-files", false);
+            final useMD5 = jets3tProperties.getBoolProperty("filecomparer.use-md5-files", false);
             if (useMD5) {
-                new File(properties.getStringProperty("filecomparer.md5-files-root-dir", "")).mkdirs();
+                new File(jets3tProperties.getStringProperty("filecomparer.md5-files-root-dir", "")).mkdirs();
             }
             def sources = sourceDir.listFiles()
             if (sources) {
                 client.run(destination, sources,
                         action,
-                        properties.getStringProperty("password", null), aclString,
+                        jets3tProperties.getStringProperty("password", null), aclString,
                         "S3");
             } else {
                 logger.warn("No files found in given source directory '${sourceDir}'.")
@@ -105,7 +106,7 @@ class S3Sync extends DefaultTask {
             def dest = [new File(destination)]
             client.run(originalSourcePath, dest,
                         action,
-                        properties.getStringProperty("password", null), aclString,
+                        jets3tProperties.getStringProperty("password", null), aclString,
                         "S3");
         }
         else{
@@ -114,20 +115,36 @@ class S3Sync extends DefaultTask {
 
     }
 
-    Jets3tProperties loadProperties() {
-        Jets3tProperties myProperties =
-            Jets3tProperties.getInstance(Constants.JETS3T_PROPERTIES_FILENAME);
+    def getConfigFile() { return _configFile }
 
-        // Read the Synchronize properties file from the classpath
-        File synchronizeProperties = project.file(configFile, PathValidation.FILE)
-        if (synchronizeProperties.canRead()) {
-            synchronizeProperties.withInputStream {
-                String propertiesSource = configFile + " in the user config";
-                myProperties.loadAndReplaceProperties(it, propertiesSource);
+    void configFile(configFile) {
+        this._configFile = configFile
+
+        if (!configFile) return
+
+        this.jets3tProperties =
+                loadJets3tProperties(project.file(configFile, PathValidation.FILE))
+    }
+
+    private static Jets3tProperties loadJets3tProperties(File configFile) {
+        String identifier = 'user-jets3t-props' + configFile.toString()
+
+        Jets3tProperties newJets3tProperties = createNewJets3tProperties(identifier)
+
+        if (configFile.canRead()) {
+            configFile.withInputStream {
+                newJets3tProperties.loadAndReplaceProperties(it, identifier)
             }
         } else {
-            throw new IllegalStateException("the config file cannot be read : " + synchronizeProperties.absolutePath)
+            throw new IllegalStateException("the config file cannot be read : " + configFile.absolutePath)
         }
-        return myProperties
+
+        return newJets3tProperties
+    }
+
+    private static Jets3tProperties createNewJets3tProperties(String identifier) {
+        S3Sync.class.getResourceAsStream("/" + DEFAULT_JETS3T_PROPERTIES_NAME).withStream {
+            return Jets3tProperties.getInstance(it, identifier)
+        }
     }
 }
