@@ -10,30 +10,32 @@ This task assumes the case, for example, a web site would be published in a AWS 
 
 ## Usage - upload
 
-    // Gradle Script
-    buildscript {
-        repositories {
-            jcenter()
-        }
-
-        dependencies {
-            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.8"
-        }
+```groovy
+// Gradle Script
+buildscript {
+    repositories {
+        jcenter()
     }
 
-    import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
-
-    task deploy(type: S3Sync){
-        description = "Deploys my site on a s3 bucket."
-
-        accessKey awsAccessKey
-        secretKey awsSecretKey
-
-        configFile "synchronizer.properties"
-
-        from "local-site"
-        into "my.bucket.name/subdirectory-optional"
+    dependencies {
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.8"
     }
+}
+
+import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
+
+task deploy(type: S3Sync){
+    description = "Deploys my site on a s3 bucket."
+
+    accessKey awsAccessKey
+    secretKey awsSecretKey
+
+    configFile "synchronizer.properties"
+
+    from "local-site"
+    into "my.bucket.name/subdirectory-optional"
+}
+```
 
 ## Situation - download
 
@@ -41,34 +43,35 @@ This task assumes the case, for example, a set of files has to be fetched from a
 
 ### Usage - download
 
-    // Gradle Script
-    buildscript {
-        repositories {
-            jcenter()
-        }
-
-        dependencies {
-            classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
-        }
+```groovy
+// Gradle Script
+buildscript {
+    repositories {
+        jcenter()
     }
 
-    import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
-
-    task deploy(type: S3Sync){
-        description = "Downloads files from s3 bucket to a local directory"
-
-        accessKey awsAccessKey
-        secretKey awsSecretKey
-
-        configFile "synchronizer.properties"
-        
-        // follows the jets3t conventions for action names
-        action = 'DOWN'
-
-        from "my.bucket.name/subdirectory-optional"
-        from "local-site"
+    dependencies {
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.5"
     }
+}
 
+import com.monochromeroad.gradle.plugin.aws.s3.S3Sync
+
+task deploy(type: S3Sync){
+    description = "Downloads files from s3 bucket to a local directory"
+
+    accessKey awsAccessKey
+    secretKey awsSecretKey
+
+    configFile "synchronizer.properties"
+
+    // follows the jets3t conventions for action names
+    action = 'DOWN'
+
+    from "my.bucket.name/subdirectory-optional"
+    from "local-site"
+}
+```
 
 # Options
 
