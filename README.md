@@ -30,7 +30,7 @@ task deploy(type: S3Sync){
     accessKey awsAccessKey
     secretKey awsSecretKey
 
-    configFile "synchronizer.properties"
+    configFile "jets3t.properties"
 
     from "local-site"
     into "my.bucket.name/subdirectory-optional"
@@ -63,7 +63,7 @@ task deploy(type: S3Sync){
     accessKey awsAccessKey
     secretKey awsSecretKey
 
-    configFile "synchronizer.properties"
+    configFile "jets3t.properties"
 
     // follows the jets3t conventions for action names
     action = 'DOWN'
