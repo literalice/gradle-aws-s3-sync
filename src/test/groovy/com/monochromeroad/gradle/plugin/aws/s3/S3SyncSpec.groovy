@@ -11,7 +11,7 @@ class S3SyncSpec extends spock.lang.Specification {
     def "Loads the synchronizer properties"() {
         Project project = ProjectBuilder.builder().withProjectDir(new File("sample")).build()
         def syncTask = project.task("sync", type: S3Sync) {
-            configFile "synchronizer.properties"
+            configFile "jets3t.properties"
 
             accessKey = "dummy key"
             secretKey = "dummy sec key"
