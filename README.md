@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/literalice/gradle-aws-s3-sync.svg?branch=master)](https://travis-ci.org/literalice/gradle-aws-s3-sync)
+
 This is the gradle task for synchronizing a local directory with a AWS S3 bucket and vice-versa.
 
 This task depends on [JetS3t](http://jets3t.s3.amazonaws.com/index.html), a open-source Java toolkit for AWS.
