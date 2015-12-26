@@ -18,7 +18,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.9"
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.10"
     }
 }
 
@@ -51,7 +51,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.9"
+        classpath "com.monochromeroad.gradle-plugins:gradle-aws-s3-sync:0.10"
     }
 }
 

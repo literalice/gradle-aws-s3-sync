@@ -8,7 +8,7 @@ import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
-version = "0.10-SNAPSHOT"
+version = "0.10"
 group = "com.monochromeroad.gradle-plugins"
 targetCompatibility = 1.6
 
