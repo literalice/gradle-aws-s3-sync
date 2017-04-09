@@ -22,7 +22,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile "net.java.dev.jets3t:jets3t:0.9.4"
-    testCompile("org.spockframework:spock-core:1.0-groovy-2.3") {
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
         exclude group: 'org.codehaus.groovy'
     }
 }
@@ -92,8 +92,8 @@ publishing {
 }
 
 ext {
-    bintrayUser = project.has("bintrayUser") ? bintrayUser : ""
-    bintrayKey = project.has("bintrayKey") ? bintrayKey : ""
+    bintrayUser = findProperty("bintrayUser") ?: ""
+    bintrayKey = findProperty("bintrayKey") ?: ""
 }
 
 bintray {
@@ -112,7 +112,11 @@ bintray {
     }
 }
 
-task bintraySign << {
+task bintraySign {
+    description "Signs the files of the artifact on bintray site."
+}
+
+bintraySign.doLast {
     final http = new HTTPBuilder(bintray.apiUrl)
     http.headers.Authorization = "Basic ${"$bintrayUser:$bintrayKey".toString().bytes.encodeBase64()}"
 
