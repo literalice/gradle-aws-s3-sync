@@ -31,6 +31,7 @@ task deploy(type: S3Sync){
     secretKey awsSecretKey
 
     configFile "jets3t.properties"
+    mimeTypesFile "my-mime.types"
 
     from "local-site"
     into "my.bucket.name/subdirectory-optional"
@@ -105,6 +106,11 @@ task deploy(type: S3Sync){
         <td>configFile()</td>
         <td><a href="http://jets3t.s3.amazonaws.com/toolkit/configuration.html">JetS3t properties file</a> path. Interpreted relative to the project directory, as for project.file() method.</td>
         <td>-<br />See also: <a href="http://jets3t.s3.amazonaws.com/toolkit/configuration.html">JetS3t's Default</a></td>
+    </tr>
+    <tr>
+        <td>mimeTypesFile()</td>
+        <td><a href="src/main/resources/mime.types">Mime types file</a> path for determing Mime type on deploying to S3. Interpreted relative to the project directory, as for project.file() method.</td>
+        <td>-<br />See also: <a href="src/main/resources/mime.types">Default</a></td>
     </tr>
     <tr>
         <td>quiet()</td>

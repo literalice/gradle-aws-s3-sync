@@ -7,6 +7,7 @@ import org.jets3t.apps.synchronize.Synchronize
 import org.jets3t.service.impl.rest.httpclient.RestS3Service
 import org.jets3t.service.security.AWSCredentials
 import org.jets3t.service.Jets3tProperties
+import org.jets3t.service.utils.Mimetypes
 
 /**
  * Main task class for the plugin
@@ -124,6 +125,12 @@ class S3Sync extends DefaultTask {
 
         this.jets3tProperties =
                 loadJets3tProperties(project.file(configFile, PathValidation.FILE))
+    }
+
+    void mimeTypesFile(mimeFile) {
+        project.file(mimeFile).withInputStream {
+            Mimetypes.instance.loadAndReplaceMimetypes(it)
+        }
     }
 
     private static Jets3tProperties loadJets3tProperties(File configFile) {

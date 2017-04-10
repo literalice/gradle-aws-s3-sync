@@ -21,6 +21,7 @@ task deploy(type: S3Sync){
     secretKey aws.secretKey
 
     configFile "jets3t.properties"
+    mimeTypesFile "my-mime.types"
     acl com.monochromeroad.gradle.plugin.aws.s3.ACL.PublicRead
 
     from "site/"
