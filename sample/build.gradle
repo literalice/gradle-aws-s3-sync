@@ -28,3 +28,15 @@ task deploy(type: S3Sync){
     into "gradle-ja"
 }
 
+task download(type: S3Sync) {
+    description = "Download the document to local."
+
+    accessKey aws.accessKey
+    secretKey aws.secretKey
+
+    action = 'DOWN'
+
+    from "gradle-ja"
+    into "$rootDir/build/site"
+}
+
