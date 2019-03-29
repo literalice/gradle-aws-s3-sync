@@ -88,6 +88,11 @@ task deploy(type: S3Sync){
         <td>-</td>
     </tr>
     <tr>
+        <td>sessionToken()</td>
+        <td>AWS Session Token</td>
+        <td>-</td>
+    </tr>
+    <tr>
         <td><b>* secretKey()</b></td>
         <td>AWS Secret Key</td>
         <td>-</td>
