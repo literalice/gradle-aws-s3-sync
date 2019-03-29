@@ -6,6 +6,7 @@ import org.gradle.api.PathValidation
 import org.jets3t.apps.synchronize.Synchronize
 import org.jets3t.service.impl.rest.httpclient.RestS3Service
 import org.jets3t.service.security.AWSCredentials
+import org.jets3t.service.security.AWSSessionCredentials
 import org.jets3t.service.Jets3tProperties
 import org.jets3t.service.utils.Mimetypes
 
@@ -21,6 +22,8 @@ class S3Sync extends DefaultTask {
     def accessKey
 
     def secretKey
+
+    def sessionToken
 
     def quiet
 
@@ -67,7 +70,12 @@ class S3Sync extends DefaultTask {
 
     @TaskAction
     def sync() {
-        def awsCredentials = new AWSCredentials(accessKey, secretKey)
+        def awsCredentials
+        if (sessionToken) {
+            awsCredentials = new AWSSessionCredentials(accessKey, secretKey, sessionToken)
+        } else {
+            awsCredentials = new AWSCredentials(accessKey, secretKey)
+        }
         def s3Service = new RestS3Service(awsCredentials)
 
         boolean doAction = true;
